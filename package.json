@@ -1,0 +1,12 @@
+{
+  "name": "ignite-nodejs-desafio-1",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Desafio 1 do curso de formação em NodeJS da Rocketseat",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "node --watch ./src/server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
