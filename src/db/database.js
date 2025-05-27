@@ -25,13 +25,24 @@ export class Database {
     fs.writeFile(databasePath, JSON.stringify(this.#database))
   }
 
-  select(table) {
-    return this.#database[table]
+  /* Selecionando e Filtrando Dados */
+
+  select(table, search) {
+    let data = this.#database[table] ?? []
+    if (search) {
+      data = data.filter(row => {
+        return Object.entries(search).some(([key, value]) => {
+          return row[key].toLowerCase().includes(value.toLowerCase())
+        })
+      })
+    }
+    return data
   }
+
+  /* Criando Dados  */
 
   insert(table, data) {
     let db = this.#database
-
     /* Verificando se a table já existe no banco de dados */
 
     if (Array.isArray(db[table])) {
@@ -39,6 +50,33 @@ export class Database {
     } else {
       db[table] = [data]
     }
+    this.#persist()
+  }
+
+  update(table, data, id) {
+    let db = this.#database
+    const dataIndex = db[table].findIndex(element => {
+      return element.id == id
+    })
+
+    const updatedData = { ...db[table][dataIndex] }
+    updatedData.title = data.title
+    updatedData.description = data.description
+    updatedData.updated_at = data.updated_at
+
+    db[table][dataIndex] = updatedData
+
+    this.#persist()
+  }
+
+  delete(table, id) {
+    let db = this.#database
+    const dataIndex = db[table].findIndex(element => {
+      return element.id == id
+    })
+
+    db[table].splice(dataIndex, 1)
+
     this.#persist()
   }
 }
