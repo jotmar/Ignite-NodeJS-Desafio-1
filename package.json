@@ -5,8 +5,11 @@
   "description": "Desafio 1 do curso de formação em NodeJS da Rocketseat",
   "main": "index.js",
   "scripts": {
-    "dev" : "node --watch ./src/server.js"
+    "dev": "node --watch ./src/server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "^5.6.0"
+  }
 }
