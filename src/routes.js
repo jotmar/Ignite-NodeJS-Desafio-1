@@ -57,7 +57,10 @@ export const routes = [
       if (req.body && validateJSON(req.body, dataSchema)) {
         const { id } = req.params
         const data = { ...req.body, updated_at: timeStamp() }
-        db.update('tasks', data, id)
+        const dbTask = db.update('tasks', data, id)
+        if (!dbTask) {
+          return res.writeHead(400).end('The ID used does not exist!')
+        }
         return res.writeHead(204).end()
       } else {
         return req.body
@@ -71,7 +74,10 @@ export const routes = [
     path: buildRoutePath('/tasks/:id'),
     handler: (req, res) => {
       const { id } = req.params
-      db.delete('tasks', id)
+      const dbTask = db.delete('tasks', id)
+      if (!dbTask) {
+        return res.writeHead(400).end('The ID used does not exist!')
+      }
       return res.writeHead(204).end()
     }
   },
@@ -80,7 +86,11 @@ export const routes = [
     path: buildRoutePath('/tasks/:id/complete'),
     handler: (req, res) => {
       const { id } = req.params
-      db.patch('tasks', id)
+      const dbTask = db.patch('tasks', id)
+      if (!dbTask) {
+        return res.writeHead(400).end('The ID used does not exist!')
+      }
+
       return res.writeHead(204).end()
     }
   }

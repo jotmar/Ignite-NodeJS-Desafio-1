@@ -60,6 +60,10 @@ export class Database {
       return element.id == id
     })
 
+    if (dataIndex === -1) {
+      return null
+    }
+
     const updatedData = { ...db[table][dataIndex] }
     updatedData.title = data.title
     updatedData.description = data.description
@@ -68,6 +72,8 @@ export class Database {
     db[table][dataIndex] = updatedData
 
     this.#persist()
+
+    return dataIndex === -1 ? false : true
   }
 
   patch(table, id) {
@@ -75,13 +81,14 @@ export class Database {
     const dataIndex = this.#database[table].findIndex(element => {
       return element.id === id
     })
-
     const updatedData = { ...db[table][dataIndex] }
     updatedData.completed_at = timeStamp()
 
     db[table][dataIndex] = updatedData
 
     this.#persist()
+
+    return dataIndex === -1 ? false : true
   }
 
   delete(table, id) {
@@ -90,8 +97,12 @@ export class Database {
       return element.id == id
     })
 
-    db[table].splice(dataIndex, 1)
+    if (dataIndex != -1) {
+      db[table].splice(dataIndex, 1)
+    }
 
     this.#persist()
+
+    return dataIndex === -1 ? false : true
   }
 }
