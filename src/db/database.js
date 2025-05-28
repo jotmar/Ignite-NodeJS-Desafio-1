@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import { timeStamp } from '../utils/timeStamp.js'
 
 const databasePath = new URL('db.json', import.meta.url)
 
@@ -63,6 +64,20 @@ export class Database {
     updatedData.title = data.title
     updatedData.description = data.description
     updatedData.updated_at = data.updated_at
+
+    db[table][dataIndex] = updatedData
+
+    this.#persist()
+  }
+
+  patch(table, id) {
+    let db = this.#database
+    const dataIndex = this.#database[table].findIndex(element => {
+      return element.id === id
+    })
+
+    const updatedData = { ...db[table][dataIndex] }
+    updatedData.completed_at = timeStamp()
 
     db[table][dataIndex] = updatedData
 
