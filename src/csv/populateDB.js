@@ -11,7 +11,11 @@ async function populateDB() {
     buffer.push(chunk)
   }
 
+  /* Removendo o header do arquivo CSV */
+
   buffer.splice(0, 1)
+
+  /* Fazendo as requisições para cada task do arquivo CSV */
 
   for (const data of buffer) {
     const bodyData = { title: data[0], description: data[1] }
